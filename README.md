@@ -5,33 +5,26 @@ Herramienta para sincronizar y migrar buzones de correo entre servidores Zimbra 
 **Creador:** Roberto Salazar (rcsalazar77@gmail.com)  
 **Licencia:** Public Domain
 
-## 📋 Requisitos
+## Requisitos
 
 - Acceso a servidores Zimbra/Carbonio
 - Credenciales de administrador
 - Conectividad SSH/remota a los servidores
 
-## 🚀 Estructura del Proyecto
+## Estructura del Proyecto
 
-```
-scripts/
-├── local/      # Script que tiene los correos a sincronizar
-└── remote/     # Script que recibe los correos
+- `scripts/local/`  Script que tiene los correos a sincronizar
+- `scripts/remote/` Script que recibe los correos
+- `config/`        Archivos de configuración
+- `docs/`          Documentación y guías
 
-config/
-└── Archivos de configuración
-
-docs/
-└── Documentación y guías
-```
-
-## 📝 Uso
+## Uso
 
 1. Configura las credenciales en `config/`
 2. Ejecuta los scripts locales según tu caso de uso
 3. Los scripts remotos se ejecutarán en los servidores automáticamente
 
-## 🔐 Configuración SSH (Sin Contraseña)
+## Configuración SSH (Sin Contraseña)
 
 ### En el Servidor LOCAL (Origen)
 
@@ -66,17 +59,10 @@ cat ~/.ssh/authorized_keys
 
 ### Flujo de Autenticación
 
-```
-LOCAL                              REMOTO
-┌─────────────────────────────┐   ┌──────────────────────┐
-│ Local.pl intenta SSH        │   │                      │
-│ ├─ ssh -i ~/.ssh/id_rsa     │──→│ Servidor SSH recibe  │
-│ │  root@XXX.XXX.XXX.XXX     │   │ ├─ Busca en auth_keys│
-│ │                           │   │ ├─ Compara clave pub │
-│ └─ Sin pedir contraseña     │   │ └─ ✅ AUTENTICADO    │
-│                             │←──│                      │
-└─────────────────────────────┘   └──────────────────────┘
-```
+- `Local.pl` en el servidor local intenta conectarse al servidor remoto por SSH.
+- Usa la clave privada `~/.ssh/id_rsa` para autenticarse sin contraseña.
+- El servidor remoto comprueba si la clave pública está en `~/.ssh/authorized_keys`.
+- Si coincide, la conexión se acepta y se puede ejecutar el script remoto.
 
 ### Configuración en config.pl
 
@@ -96,7 +82,7 @@ ssh -i ~/.ssh/id_rsa root@XXX.XXX.XXX.XXX "echo 'Conexión exitosa'"
 
 Si aparece "Conexión exitosa" sin pedir contraseña = Funcionando
 
-## 🕒 Ejecución por cron
+## Ejecución por cron
 
 Para evitar corridas dobles es recomendable ejecutar `Local.pl` con un lock. El script ya incluye un lock de instancia (`local.lock`) que evita que se inicie otra instancia si ya hay una en ejecución.
 
@@ -115,6 +101,6 @@ Si `flock` no está disponible, puedes usar un wrapper simple con un lockfile:
 `Local.pl` también controla cuántas restauraciones remotas pueden ejecutarse a la vez usando `max_remote_restore`.
 Esto no evita ejecuciones múltiples de `Local.pl`, pero sí limita la cantidad de procesos `zmmailbox postRestURL` en el servidor remoto.
 
-## 📄 Licencia
+## Licencia
 
 Public Domain - Libre para usar, modificar y distribuir
