@@ -94,7 +94,26 @@ LOCAL                              REMOTO
 ssh -i ~/.ssh/id_rsa root@XXX.XXX.XXX.XXX "echo 'Conexión exitosa'"
 ```
 
-Si aparece "Conexión exitosa" sin pedir contraseña = ✅ Funcionando
+Si aparece "Conexión exitosa" sin pedir contraseña = Funcionando
+
+## 🕒 Ejecución por cron
+
+Para evitar corridas dobles es recomendable ejecutar `Local.pl` con un lock. El script ya incluye un lock de instancia (`local.lock`) que evita que se inicie otra instancia si ya hay una en ejecución.
+
+Ejemplo de entrada de cron:
+```bash
+*/30 * * * * flock -n /opt/zimbra-carbonio-mr-sync/local.lock /usr/bin/perl /opt/zimbra-carbonio-mr-sync/scripts/local/Local.pl
+```
+
+Si `flock` no está disponible, puedes usar un wrapper simple con un lockfile:
+```bash
+*/30 * * * * [ -e /opt/zimbra-carbonio-mr-sync/local.lock ] && exit 1; /usr/bin/perl /opt/zimbra-carbonio-mr-sync/scripts/local/Local.pl
+```
+
+### Nota sobre concurrencia remota
+
+`Local.pl` también controla cuántas restauraciones remotas pueden ejecutarse a la vez usando `max_remote_restore`.
+Esto no evita ejecuciones múltiples de `Local.pl`, pero sí limita la cantidad de procesos `zmmailbox postRestURL` en el servidor remoto.
 
 ## 📄 Licencia
 

@@ -13,6 +13,7 @@ use strict;
 use warnings;
 use POSIX ();
 use File::Spec;
+use Fcntl qw(:flock);
 
 # Cargar configuración
 my $config_file = File::Spec->catfile(File::Spec->updir(), 'config', 'config.pl');
@@ -21,6 +22,13 @@ require $config_file or die "No se pudo cargar configuración: $@";
 my $dir = $CONFIG{'local_dir'};
 my $buzones_file = File::Spec->catfile($dir, $CONFIG{'buzones_file'});
 chdir($dir) or die "No se pudo cambiar al directorio $dir: $!";
+
+my $lock_file = File::Spec->catfile($dir, 'local.lock');
+open(my $LOCK, '>', $lock_file) or die "No se pudo abrir lock $lock_file: $!";
+unless (flock($LOCK, LOCK_EX | LOCK_NB)) {
+    die "Otra instancia de Local.pl ya está ejecutándose. Saliendo.\n";
+}
+print $LOCK "$$\n";
 
 &daemonize();
 
