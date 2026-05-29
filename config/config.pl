@@ -11,7 +11,7 @@ my %CONFIG = (
     'buzones_file'        => 'Buzones.zmp',
     
     # --- SERVIDOR REMOTO (SSH) ---
-    'ssh_host'            => '159.69.188.210',
+    'ssh_host'            => 'XXX.XXX.XXX.XXX',
     'ssh_user'            => 'root',
     'ssh_key_file'        => '/root/zmail.key',
     'ssh_port'            => 22,
