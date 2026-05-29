@@ -15,8 +15,8 @@ Herramienta para sincronizar y migrar buzones de correo entre servidores Zimbra 
 
 ```
 scripts/
-├── local/      # Scripts que ejecutas desde tu máquina
-└── remote/     # Scripts que se ejecutan en los servidores
+├── local/      # Script que tiene los correos a sincronizar
+└── remote/     # Script que recibe los correos
 
 config/
 └── Archivos de configuración
