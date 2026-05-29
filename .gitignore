@@ -1,0 +1,28 @@
+# Configuraciones sensibles
+config/*.conf
+config/*.env
+config/*.key
+!config/example-*.conf
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales
+*.tmp
+*.swp
+*.swo
+*~
+
+# Directorios del sistema
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.iml
