@@ -13,7 +13,7 @@ my %CONFIG = (
     # --- SERVIDOR REMOTO (SSH) ---
     'ssh_host'            => 'XXX.XXX.XXX.XXX',
     'ssh_user'            => 'root',
-    'ssh_key_file'        => '/root/zmail.key',
+        'ssh_key_file'        => '/root/.ssh/id_rsa',
     'ssh_port'            => 22,
     # 'ssh_pass'          => '',  # Descomentar si usas contraseña en lugar de clave
     
